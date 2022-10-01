@@ -23,13 +23,12 @@
   "author": "Risto Stevcev",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "bisect_ppx": "^2.1.0",
     "bs-stdlib-shims": "^0.1.0"
   },
   "devDependencies": {
-    "bs-chai": "^1.0.1",
-    "bs-jsverify": "0.10.0",
+    "bs-chai": "github:dsiu/bs-chai#rescript-v10-pipelast",
+    "bs-jsverify": "github:dsiu/bs-jsverify#rescript-v10",
     "bs-mocha": "^1.0.0",
-    "bs-platform": "^9.0.0"
+    "rescript": "^10.0.0"
   }
 }

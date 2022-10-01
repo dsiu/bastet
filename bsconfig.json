@@ -25,7 +25,6 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "bisect_ppx"
   ],
   "bs-dev-dependencies": [
     "bs-jsverify",
@@ -33,6 +32,5 @@
     "bs-chai"
   ],
   "ppx-flags": [
-    "bisect_ppx/ppx"
   ]
 }
