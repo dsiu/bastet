@@ -7,5 +7,5 @@ open Interface
 module Show: SHOW with type t = float = {
   type t = float
 
-  let show = Js.Float.toString
+  let show = RescriptCore.Float.toString
 }
