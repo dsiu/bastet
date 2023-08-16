@@ -44,7 +44,7 @@ module Additive = {
   module Group: GROUP with type t = float = {
     include Monoid
 
-    let inverse = \"*."(-1.0)
+    let inverse = \"*."(-1.0, _)
   }
 
   module Abelian_Group: ABELIAN_GROUP with type t = float = {
