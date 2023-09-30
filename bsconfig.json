@@ -33,5 +33,6 @@
     "bs-chai"
   ],
   "ppx-flags": [
-  ]
+  ],
+  "uncurried": false
 }

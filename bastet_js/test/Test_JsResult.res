@@ -1,4 +1,4 @@
-open BsMocha.Mocha
+open RescriptMocha.Mocha
 open BsChai.Expect.Expect
 open BsChai.Expect.Combos.End
 open BsJsverify.Verify.Arbitrary
@@ -287,8 +287,10 @@ describe("Result", () => {
   })
   describe("Apply", () => {
     module V = Verify.Apply(Functors.ResultF.String.Apply)
-    property1("should satisfy associative composition", arb_result(arb_nat, arb_string), n =>
-      V.associative_composition(Ok(\"^"("!")), Ok(string_of_int), n)
+    property1(
+      "should satisfy associative composition",
+      arb_result(arb_nat, arb_string),
+      n => V.associative_composition(Ok(\"^"("!")), Ok(string_of_int), n),
     )
   })
   describe("Applicative", () => {
@@ -339,36 +341,45 @@ describe("Result", () => {
     )
   })
   describe("Show", () =>
-    it("should show the either value", () => {
-      expect(Functors.ResultF.Bool.Int.Show.show(Ok(true))) |> to_be("true")
-      expect(Functors.ResultF.Bool.Int.Show.show(Error(123))) |> to_be("123")
-    })
+    it(
+      "should show the either value",
+      () => {
+        expect(Functors.ResultF.Bool.Int.Show.show(Ok(true))) |> to_be("true")
+        expect(Functors.ResultF.Bool.Int.Show.show(Error(123))) |> to_be("123")
+      },
+    )
   )
   describe("Eq", () =>
-    it("should compare two either values for equality", () => {
-      module E = Result.Eq(Int.Eq, Int.Eq)
-      let eq = Functors.ResultF.Float.Int.Eq.eq
-      expect(eq(Error(123), Error(123))) |> to_be(true)
-      expect(eq(Error(123), Error(456))) |> to_be(false)
-      expect(eq(Ok(12.3), Ok(12.3))) |> to_be(true)
-      expect(eq(Ok(12.3), Ok(45.6))) |> to_be(false)
-      expect(eq(Error(123), Ok(45.6))) |> to_be(false)
-      expect(E.eq(Error(123), Ok(123))) |> to_be(false)
-      expect(E.eq(Ok(123), Error(123))) |> to_be(false)
-    })
+    it(
+      "should compare two either values for equality",
+      () => {
+        module E = Result.Eq(Int.Eq, Int.Eq)
+        let eq = Functors.ResultF.Float.Int.Eq.eq
+        expect(eq(Error(123), Error(123))) |> to_be(true)
+        expect(eq(Error(123), Error(456))) |> to_be(false)
+        expect(eq(Ok(12.3), Ok(12.3))) |> to_be(true)
+        expect(eq(Ok(12.3), Ok(45.6))) |> to_be(false)
+        expect(eq(Error(123), Ok(45.6))) |> to_be(false)
+        expect(E.eq(Error(123), Ok(123))) |> to_be(false)
+        expect(E.eq(Ok(123), Error(123))) |> to_be(false)
+      },
+    )
   )
   describe("Ord", () =>
-    it("should compare two either values for equality", () => {
-      module E = Result.Ord(Int.Ord, Int.Ord)
-      let compare = Functors.ResultF.Float.Int.Ord.compare
-      expect(compare(Error(123), Error(123))) |> to_be(#equal_to)
-      expect(compare(Error(123), Error(456))) |> to_be(#less_than)
-      expect(compare(Ok(12.3), Ok(12.3))) |> to_be(#equal_to)
-      expect(compare(Ok(12.3), Ok(45.6))) |> to_be(#less_than)
-      expect(compare(Error(123), Ok(45.6))) |> to_be(#less_than)
-      expect(E.compare(Error(123), Ok(123))) |> to_be(#less_than)
-      expect(E.compare(Ok(123), Error(123))) |> to_be(#greater_than)
-    })
+    it(
+      "should compare two either values for equality",
+      () => {
+        module E = Result.Ord(Int.Ord, Int.Ord)
+        let compare = Functors.ResultF.Float.Int.Ord.compare
+        expect(compare(Error(123), Error(123))) |> to_be(#equal_to)
+        expect(compare(Error(123), Error(456))) |> to_be(#less_than)
+        expect(compare(Ok(12.3), Ok(12.3))) |> to_be(#equal_to)
+        expect(compare(Ok(12.3), Ok(45.6))) |> to_be(#less_than)
+        expect(compare(Error(123), Ok(45.6))) |> to_be(#less_than)
+        expect(E.compare(Error(123), Ok(123))) |> to_be(#less_than)
+        expect(E.compare(Ok(123), Error(123))) |> to_be(#greater_than)
+      },
+    )
   )
   describe("Bounded", () => {
     let arb_float' = arb_float(Float.Bounded.bottom, Float.Bounded.top)
@@ -523,19 +534,31 @@ describe("Result", () => {
     let errResult: Belt.Result.t<int, string> = Belt.Result.Error("ERROR")
     let okResult: Belt.Result.t<int, string> = Belt.Result.Ok(4)
     let someFloat = Some(5.0)
-    describe("Hush", () => {
-      it("should convert Error result to None", () => expect(Result.hush(errResult)) |> to_be(None))
-      it("should convert Success result to Some", () =>
-        expect(Result.hush(okResult)) |> to_be(Some(4))
-      )
-    })
-    describe("Note", () => {
-      it("should convert None to Error result", () =>
-        expect(Result.note("ERROR", None)) |> to_be(Belt.Result.Error("ERROR"))
-      )
-      it("should convert Some to Ok result", () =>
-        expect(Result.note("ERROR", someFloat)) |> to_be(Belt.Result.Ok(5.0))
-      )
-    })
+    describe(
+      "Hush",
+      () => {
+        it(
+          "should convert Error result to None",
+          () => expect(Result.hush(errResult)) |> to_be(None),
+        )
+        it(
+          "should convert Success result to Some",
+          () => expect(Result.hush(okResult)) |> to_be(Some(4)),
+        )
+      },
+    )
+    describe(
+      "Note",
+      () => {
+        it(
+          "should convert None to Error result",
+          () => expect(Result.note("ERROR", None)) |> to_be(Belt.Result.Error("ERROR")),
+        )
+        it(
+          "should convert Some to Ok result",
+          () => expect(Result.note("ERROR", someFloat)) |> to_be(Belt.Result.Ok(5.0)),
+        )
+      },
+    )
   })
 })

@@ -1,4 +1,4 @@
-open BsMocha.Mocha
+open RescriptMocha.Mocha
 open BsChai.Expect.Expect
 open BsChai.Expect.Combos.End
 open BsJsverify.Verify.Arbitrary
@@ -27,18 +27,23 @@ describe("Tuple", () => {
   describe("Functor", () => {
     module V = Verify.Functor(TupleF.String.Functor)
     property1("should satisfy identity", arb_tuple((arb_string, arb_nat)), V.identity)
-    property1("should satisfy composition", arb_tuple((arb_string, arb_nat)), a =>
-      V.composition(\"^"("!"), string_of_int, a)
+    property1(
+      "should satisfy composition",
+      arb_tuple((arb_string, arb_nat)),
+      a => V.composition(\"^"("!"), string_of_int, a),
     )
   })
   describe("Apply", () => {
     module V = Verify.Apply(TupleF.String.Apply)
-    property1("should satisfy associative composition", arb_tuple((arb_string, arb_nat)), n =>
-      V.associative_composition(
-        (String.Monoid.empty, \"^"("!")),
-        (String.Monoid.empty, string_of_int),
-        n,
-      )
+    property1(
+      "should satisfy associative composition",
+      arb_tuple((arb_string, arb_nat)),
+      n =>
+        V.associative_composition(
+          (String.Monoid.empty, \"^"("!")),
+          (String.Monoid.empty, string_of_int),
+          n,
+        ),
     )
   })
   describe("Applicative", () => {
@@ -68,21 +73,30 @@ describe("Tuple", () => {
   describe("Foldable", () => {
     open TupleF.String.Foldable
     let empty = String.Monoid.empty
-    it("should do a left fold", () => {
-      expect(fold_left(\"+", 0, (empty, 123))) |> to_be(123)
-      expect(fold_left(\"-", 10, (empty, 321))) |> to_be(-311)
-    })
+    it(
+      "should do a left fold",
+      () => {
+        expect(fold_left(\"+", 0, (empty, 123))) |> to_be(123)
+        expect(fold_left(\"-", 10, (empty, 321))) |> to_be(-311)
+      },
+    )
     it("should do a right fold", () => expect(fold_right(\"-", 10, (empty, 321))) |> to_be(311))
-    it("should do a map fold (int)", () => {
-      module F = Fold_Map(Int.Additive.Monoid)
-      expect(F.fold_map(Function.Category.id, (empty, 123))) |> to_be(123)
-    })
-    it("should do a map fold (list)", () => {
-      module F = Fold_Map_Plus(List.Plus)
-      expect(F.fold_map(List.Applicative.pure, (empty, list{1, 2, 3}))) |> to_be(list{
-        list{1, 2, 3},
-      })
-    })
+    it(
+      "should do a map fold (int)",
+      () => {
+        module F = Fold_Map(Int.Additive.Monoid)
+        expect(F.fold_map(Function.Category.id, (empty, 123))) |> to_be(123)
+      },
+    )
+    it(
+      "should do a map fold (list)",
+      () => {
+        module F = Fold_Map_Plus(List.Plus)
+        expect(F.fold_map(List.Applicative.pure, (empty, list{1, 2, 3}))) |> to_be(list{
+          list{1, 2, 3},
+        })
+      },
+    )
   })
   describe("Traversable", () => {
     let (traverse, sequence) = {
@@ -90,16 +104,22 @@ describe("Tuple", () => {
       (traverse, sequence)
     }
 
-    it("should traverse the array", () => {
-      let positive_int = x => x >= 0 ? list{x} : list{}
+    it(
+      "should traverse the array",
+      () => {
+        let positive_int = x => x >= 0 ? list{x} : list{}
 
-      expect(traverse(positive_int, ("foo", 123))) |> to_be(list{("foo", 123)})
-      expect(traverse(positive_int, ("bar", -123))) |> to_be(list{})
-    })
-    it("should sequence the array", () => {
-      expect(sequence(("foo", list{123}))) |> to_be(list{("foo", 123)})
-      expect(sequence(("bar", list{}))) |> to_be(list{})
-    })
+        expect(traverse(positive_int, ("foo", 123))) |> to_be(list{("foo", 123)})
+        expect(traverse(positive_int, ("bar", -123))) |> to_be(list{})
+      },
+    )
+    it(
+      "should sequence the array",
+      () => {
+        expect(sequence(("foo", list{123}))) |> to_be(list{("foo", 123)})
+        expect(sequence(("bar", list{}))) |> to_be(list{})
+      },
+    )
   })
   describe("Eq", () => {
     module E = Tuple.Eq(String.Eq, Int.Eq)
